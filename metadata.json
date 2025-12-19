@@ -1,0 +1,7 @@
+{
+  "name": "UniRide - Student Carpool",
+  "description": "A social ridesharing app for students to coordinate rides, build reputation, and save money. Features smart NLP ride creation and a reputation system to reduce cancellations.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

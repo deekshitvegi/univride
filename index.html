@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UniRide - Student Carpool</title>
+    
+    <!-- Tailwind CSS (CDN for Simplicity) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- CRITICAL: Raw Error Handler for White Screens -->
+    <script>
+      // 1. Catch Script Loading Errors (404s) - Must use capturing phase (true)
+      window.addEventListener('error', function(e) {
+        // Check if the error is from a script or link tag (Resource loading failure)
+        if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK')) {
+           const root = document.getElementById('root');
+           if (root && root.innerHTML.includes('Loading UniRide')) {
+             root.innerHTML = `
+                <div style="padding: 20px; font-family: system-ui; color: #7f1d1d; background: #fef2f2; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                  <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Deployment Error</h1>
+                  <p style="margin-bottom: 10px;">Failed to load application files.</p>
+                  <p style="font-size: 12px; margin-bottom: 20px;">The browser could not find: <strong>${e.target.src || e.target.href}</strong></p>
+                  <div style="text-align: left; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 8px; font-size: 12px;">
+                    <strong>Tip for Developer:</strong><br/>
+                    If this is a GitHub Pages deployment, ensure your <code>vite.config.ts</code> has <code>base: './'</code> configured.
+                  </div>
+                </div>
+              `;
+           }
+        }
+      }, true);
+
+      // 2. Catch Runtime Errors
+      window.onerror = function(message, source, lineno, colno, error) {
+        const root = document.getElementById('root');
+        if (root && root.innerHTML.includes('Loading UniRide')) {
+             root.innerHTML = `
+            <div style="padding: 20px; font-family: system-ui; color: #7f1d1d; background: #fef2f2; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+              <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Application Error</h1>
+              <p style="margin-bottom: 20px;">An unexpected error occurred during startup.</p>
+              <pre style="background: rgba(0,0,0,0.05); padding: 15px; border-radius: 8px; text-align: left; overflow: auto; max-width: 90%; font-size: 12px;">${message}</pre>
+            </div>
+          `;
+        }
+      };
+      
+      // 3. Catch Promise Rejections
+      window.addEventListener('unhandledrejection', function(event) {
+        console.error('Unhandled rejection (promise):', event.reason);
+      });
+    </script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                500: '#3b82f6',
+                600: '#2563eb',
+                900: '#1e3a8a',
+              },
+              accent: {
+                500: '#8b5cf6',
+              }
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(100%)' },
+                '100%': { transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Custom scrollbar for cleaner look */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1; 
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8; 
+      }
+      /* Map Container Fix - Full Screen */
+      html, body, #root {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Prevent body scroll, let inner elements scroll */
+      }
+      .leaflet-container {
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        background: #f8fafc;
+      }
+      /* Hide scrollbar for bottom sheet but keep functionality */
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-slate-50 text-slate-900 antialiased selection:bg-brand-200 selection:text-brand-900">
+    <div id="root">
+        <!-- Loading State (Visual feedback while React loads) -->
+        <div style="height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: sans-serif; color: #3b82f6;">
+            <svg class="animate-spin" style="width: 40px; height: 40px; margin-bottom: 16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <h2 style="font-weight: bold; font-size: 18px;">Loading UniRide...</h2>
+            <p style="font-size: 12px; color: #94a3b8; margin-top: 10px;">Initial load may take a moment</p>
+        </div>
+    </div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

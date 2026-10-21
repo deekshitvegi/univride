@@ -37,8 +37,8 @@ export const RadarMap: React.FC<RadarMapProps> = ({ rides, userLocation, onRideC
             attributionControl: false 
         }).setView([userLocation.lat, userLocation.lng], 11);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            subdomains: 'abcd',
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
             maxZoom: 19
         }).addTo(mapInstanceRef.current);
         

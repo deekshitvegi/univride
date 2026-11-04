@@ -585,7 +585,7 @@ export default function App() {
         </div>
 
         <div 
-          className={`absolute left-0 right-0 bottom-0 z-40 bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex flex-col max-h-[85vh] ${isPanelOpen ? 'translate-y-0' : 'translate-y-[calc(100%-110px)]'}`}
+          className={`absolute left-0 right-0 md:left-1/2 md:right-auto md:w-full md:max-w-2xl md:-translate-x-1/2 bottom-0 z-40 bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex flex-col max-h-[85vh] ${isPanelOpen ? 'translate-y-0' : 'translate-y-[calc(100%-110px)]'}`}
         >
           <div 
             className="w-full p-3 flex flex-col items-center cursor-pointer bg-white rounded-t-[2.5rem] hover:bg-slate-50 transition-colors shrink-0 z-10 relative border-b border-slate-100"

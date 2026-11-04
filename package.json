@@ -6,6 +6,7 @@
   "homepage": "https://deekshitvegi.github.io",
   "scripts": {
     "dev": "vite",
+    "start": "vite --port 3000",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",

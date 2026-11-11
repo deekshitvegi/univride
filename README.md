@@ -12,7 +12,7 @@ A smart social ridesharing platform designed specifically for university student
 
 ## 🛠️ Tech Stack
 
-*   **Frontend:** React, TypeScript, Tailwind CSS
+*   **Frontend:** React, TypeScript, Tailwind CSS (compiled at build time)
 *   **Mapping:** Leaflet.js, OSRM (Open Source Routing Machine)
 *   **AI:** Google Gemini API (for parsing requests and smart replies)
 *   **State:** LocalStorage persistence (No backend required for demo)
@@ -34,33 +34,31 @@ A smart social ridesharing platform designed specifically for university student
 
 ---
 
-## ☁️ Deployment Guide (Fixing the White Page)
+## 🌐 Deploying as a Website
 
-If you see a white screen after deploying to GitHub Pages, it is likely a pathing issue. Because your repository is named **`deekshitvegi.github.io`**, this is a **User Site**, which behaves slightly differently than standard repositories.
+UniRide is a static site, so it runs on GitHub Pages with no server.
 
-### Step 1: Update `package.json`
-Open your `package.json` file in your code editor. Add the `homepage` field at the top level. 
+1. In the repository, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+2. Push to `main`. The workflow in `.github/workflows/deploy.yml` builds the app and publishes it to
+   `https://deekshitvegi.github.io/univride/`.
 
-**Use this exact URL:**
+You can also run it by hand from the **Actions** tab ("Deploy to GitHub Pages" → Run workflow).
+`vite.config.ts` uses `base: './'`, so the same build works at any URL path.
 
-```json
-{
-  "name": "uniride",
-  "version": "1.0.0",
-  "homepage": "https://deekshitvegi.github.io", 
-  // ... rest of file
-}
-```
+## 📱 Installing as an App
 
-### Step 2: Build & Deploy
-In your terminal, run:
+The site ships a web app manifest, so phones and desktop browsers can install it:
+
+* **iPhone (Safari):** Share → *Add to Home Screen*
+* **Android / desktop Chrome:** menu → *Install app*
+
+## 🔑 AI Features (optional)
+
+Smart ride parsing and suggested replies use the Gemini API. Without a key the app still works and
+falls back to built-in parsing. To enable them locally, create `.env.local`:
 
 ```bash
-npm run build
-npm run deploy
+VITE_API_KEY=your-gemini-key
 ```
 
-*(Note: Ensure you have `gh-pages` installed: `npm install gh-pages --save-dev`)*
-
-### Step 3: API Keys
-Since this is a client-side demo, ensure your `API_KEY` for Google GenAI is correctly set in your environment variables. If the map or AI features don't load, check the browser console (F12) for errors.
+Do not add the key to the GitHub Pages build: anything bundled into a static site is visible to every visitor.

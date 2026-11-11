@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://deekshitvegi.github.io",
+  "homepage": "https://deekshitvegi.github.io/univride/",
   "scripts": {
     "dev": "vite",
     "start": "vite --port 3000",

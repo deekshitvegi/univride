@@ -9,6 +9,11 @@ import { UserProfile } from './components/UserProfile';
 import { parseRideRequest, getChatSuggestion } from './services/geminiService';
 
 // Icons
+const Logo = () => (
+  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center shadow-md shadow-brand-500/30 shrink-0">
+    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 17h14M6 17l1.5-6.5A2 2 0 019.45 9h5.1a2 2 0 011.95 1.5L18 17M7.5 17v2M16.5 17v2M3 11l2 1M21 11l-2 1" /></svg>
+  </div>
+);
 const PlusIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>;
 const SendIcon = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>;
 const CloseIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>;
@@ -574,10 +579,13 @@ export default function App() {
           selectedRideId={selectedRide?.id} 
         />
 
-        <div className="absolute top-0 left-0 right-0 z-50 p-4 flex justify-between items-start bg-gradient-to-b from-white/90 to-transparent pointer-events-none">
-          <div className="pointer-events-auto">
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight drop-shadow-sm">UniRide <span className="text-brand-500">.</span></h1>
-            <p className="text-xs text-slate-600 font-medium bg-white/50 backdrop-blur rounded-full px-2 py-0.5 inline-block">Student Carpool Network</p>
+        <div className="absolute top-0 left-0 right-0 md:left-[440px] z-50 p-4 flex justify-between items-start pointer-events-none">
+          <div className="pointer-events-auto md:invisible flex items-center gap-2.5 bg-white/95 backdrop-blur rounded-2xl pl-2 pr-4 py-2 shadow-lg shadow-slate-900/10 border border-white">
+            <Logo />
+            <div>
+              <h1 className="text-lg font-extrabold text-slate-900 tracking-tight leading-none">UniRide</h1>
+              <p className="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">Student carpool network</p>
+            </div>
           </div>
           <div onClick={() => handleViewProfile(currentUser)} className="cursor-pointer hover:scale-105 transition-transform pointer-events-auto shadow-lg rounded-2xl">
               <TrustBadge score={currentUser.trustScore} cancellations={currentUser.cancellations} />
@@ -585,10 +593,10 @@ export default function App() {
         </div>
 
         <div 
-          className={`absolute left-0 right-0 md:left-1/2 md:right-auto md:w-full md:max-w-2xl md:-translate-x-1/2 bottom-0 z-40 bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex flex-col max-h-[85vh] ${isPanelOpen ? 'translate-y-0' : 'translate-y-[calc(100%-110px)]'}`}
+          className={`absolute left-0 right-0 bottom-0 z-40 bg-white shadow-[0_-10px_40px_rgba(15,23,42,0.18)] rounded-t-[2rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] flex flex-col max-h-[64vh] md:top-0 md:right-auto md:w-[440px] md:max-h-none md:rounded-none md:shadow-[10px_0_40px_rgba(15,23,42,0.12)] md:translate-y-0 ${isPanelOpen ? 'translate-y-0' : 'translate-y-[calc(100%-110px)]'}`}
         >
           <div 
-            className="w-full p-3 flex flex-col items-center cursor-pointer bg-white rounded-t-[2.5rem] hover:bg-slate-50 transition-colors shrink-0 z-10 relative border-b border-slate-100"
+            className="md:hidden w-full p-3 flex flex-col items-center cursor-pointer bg-white rounded-t-[2rem] hover:bg-slate-50 transition-colors shrink-0 z-10 relative border-b border-slate-100"
             onClick={() => setIsPanelOpen(!isPanelOpen)}
           >
             <div className="w-12 h-1.5 bg-slate-300 rounded-full mb-3"></div>
@@ -607,8 +615,20 @@ export default function App() {
             )}
           </div>
 
-          <div className={`overflow-y-auto px-4 pb-24 transition-opacity duration-300 ${isPanelOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-6 relative z-20">
+          <div className="hidden md:flex items-center gap-3 px-6 pt-6 pb-4 shrink-0">
+            <Logo />
+            <div className="flex-1">
+              <h1 className="text-xl font-extrabold text-slate-900 tracking-tight leading-none">UniRide</h1>
+              <p className="text-xs text-slate-500 font-medium mt-1">Student carpool network</p>
+            </div>
+            <button onClick={() => handleViewProfile(currentUser)} className="flex items-center gap-2 rounded-full border border-slate-200 pl-1 pr-3 py-1 hover:bg-slate-50 transition-colors">
+              <img src={currentUser.avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover" />
+              <span className="text-sm font-semibold text-slate-700">{currentUser.name.split(' ')[0]}</span>
+            </button>
+          </div>
+
+          <div className={`flex-1 min-h-0 overflow-y-auto px-4 md:px-6 pb-24 md:pb-8 transition-opacity duration-300 md:opacity-100 md:pointer-events-auto ${isPanelOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <div className="bg-gradient-to-br from-slate-50 to-white rounded-3xl border border-slate-200/70 p-4 mb-5 relative z-20">
                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 flex justify-between items-center">
                     Plan a Trip
                     <span className={`text-[10px] px-2 py-0.5 rounded-full ${createType === RideType.OFFER ? 'bg-emerald-100 text-emerald-700' : 'bg-violet-100 text-violet-700'}`}>
@@ -708,15 +728,15 @@ export default function App() {
                 </div>
             </div>
 
-            <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
+            <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:-mx-6 md:px-6">
               {['ALL', RideType.OFFER, RideType.REQUEST, 'MY_RIDES'].map((type) => (
                   <button
                   key={type}
                   onClick={() => setFilterType(type as any)}
-                  className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap border ${
+                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap border ${
                       filterType === type 
-                      ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20 scale-105' 
-                      : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-md shadow-slate-900/20' 
+                      : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   }`}
                   >
                   {type === 'ALL' ? 'All Rides' : type === RideType.OFFER ? 'Driver Offers' : type === RideType.REQUEST ? 'Rider Requests' : 'My Rides (Active)'}
@@ -725,8 +745,9 @@ export default function App() {
             </div>
 
             <div className="space-y-4 min-h-[300px]">
-              <h2 className="font-bold text-lg text-slate-800 px-1 sticky top-0 bg-white py-2 z-10">
+              <h2 className="font-bold text-lg text-slate-800 px-1 sticky top-0 bg-white/95 backdrop-blur py-2 z-10 flex items-baseline justify-between">
                 {filterType === 'MY_RIDES' ? 'Your Scheduled Trips' : 'Nearby Activity'}
+                <span className="text-xs font-semibold text-slate-400">{visibleRides.length} {visibleRides.length === 1 ? 'ride' : 'rides'}</span>
               </h2>
               {visibleRides.map(ride => (
                   <RideCard 
@@ -741,9 +762,10 @@ export default function App() {
                   />
               ))}
               {visibleRides.length === 0 && (
-                  <div className="text-center py-16 text-slate-400 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
-                      <p className="mb-2 text-2xl">🏜️</p>
-                      <p className="font-medium">No rides found.</p>
+                  <div className="text-center py-14 px-6 text-slate-400 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+                      <p className="mb-2 text-3xl">🚗</p>
+                      <p className="font-semibold text-slate-600">No rides here yet</p>
+                      <p className="text-xs mt-1">Post a trip above and classmates heading the same way can join you.</p>
                   </div>
               )}
             </div>
@@ -751,7 +773,7 @@ export default function App() {
         </div>
 
         {selectedRide && (
-          <div className="absolute bottom-0 left-0 right-0 z-[60] p-4 animate-slide-up">
+          <div className="absolute bottom-0 left-0 right-0 md:left-[440px] z-[60] p-4 md:p-6 animate-slide-up">
               <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden max-w-md mx-auto">
                   <div className="flex justify-between items-center p-4 border-b border-slate-100 bg-slate-50/80 backdrop-blur">
                       <h3 className="font-bold text-slate-800">Selected Route</h3>
@@ -777,7 +799,7 @@ export default function App() {
         {!isPanelOpen && !selectedRide && (
             <button 
               onClick={() => setIsPanelOpen(true)}
-              className="absolute bottom-8 right-6 z-40 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform"
+              className="md:hidden absolute bottom-8 right-6 z-40 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform"
             >
               <ChevronUpIcon />
             </button>
@@ -910,6 +932,13 @@ export default function App() {
         )}
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+          {messages.length === 0 && (
+            <div className="h-full flex flex-col items-center justify-center text-center px-8 animate-fade-in">
+              <img src={activeChatUser.avatarUrl} alt="" className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md mb-3" />
+              <p className="font-semibold text-slate-700">Start a conversation with {activeChatUser.name.split(' ')[0]}</p>
+              <p className="text-xs text-slate-400 mt-1 max-w-xs">Agree on a pickup spot and time. Never share your drop-off PIN until you arrive.</p>
+            </div>
+          )}
           {messages.map(msg => {
             if (msg.isSystem) {
                 return (

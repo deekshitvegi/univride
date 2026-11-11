@@ -1,0 +1,13 @@
+{
+  "name": "UniRide - Student Carpool",
+  "short_name": "UniRide",
+  "description": "Share rides, split costs, and coordinate safe carpools with fellow students.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

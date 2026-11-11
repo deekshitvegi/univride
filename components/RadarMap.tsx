@@ -17,6 +17,14 @@ export const RadarMap: React.FC<RadarMapProps> = ({ rides, userLocation, onRideC
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const layersRef = useRef<any[]>([]);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
+
+  // Tear down the map and observer on unmount (e.g. switching to chat/profile)
+  useEffect(() => () => {
+    resizeObserverRef.current?.disconnect();
+    mapInstanceRef.current?.remove();
+    mapInstanceRef.current = null;
+  }, []);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -34,8 +42,14 @@ export const RadarMap: React.FC<RadarMapProps> = ({ rides, userLocation, onRideC
         if (!mapInstanceRef.current) {
         mapInstanceRef.current = L.map(mapContainerRef.current, {
             zoomControl: false,
-            attributionControl: false 
+            attributionControl: true
         }).setView([userLocation.lat, userLocation.lng], 11);
+        mapInstanceRef.current.attributionControl.setPrefix(false).setPosition('bottomright');
+
+        // Leaflet measures its container once at init; re-measure whenever layout settles or the window resizes
+        const map = mapInstanceRef.current;
+        resizeObserverRef.current = new ResizeObserver(() => map.invalidateSize());
+        resizeObserverRef.current.observe(mapContainerRef.current);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors',
@@ -201,7 +215,7 @@ export const RadarMap: React.FC<RadarMapProps> = ({ rides, userLocation, onRideC
        <div ref={mapContainerRef} className="w-full h-full z-0" />
        
        {/* Improved Legend */}
-       <div className="absolute top-24 right-4 z-[400] bg-white/90 backdrop-blur p-3 rounded-2xl border border-slate-100 shadow-lg pointer-events-none flex flex-col gap-3">
+       <div className="hidden md:flex absolute bottom-8 right-6 z-[400] bg-white/95 backdrop-blur p-3 rounded-2xl border border-slate-100 shadow-lg pointer-events-none flex-col gap-3">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-6 h-6 bg-emerald-500 rounded-full text-white shadow-sm">
                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
